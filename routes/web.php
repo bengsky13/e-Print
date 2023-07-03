@@ -27,3 +27,5 @@ Route::post('/dashboard/outlet/new', [OutletController::class, 'store']);
 
 
 Route::get('/print/{id}', [UserController::class, 'index']);
+Route::post('/print/{id}/upload', [UserController::class, 'upload']);
+Route::get('/print/{id}/payment', [UserController::class, 'payment']);

@@ -27,15 +27,16 @@
             </thead>
             <tbody>
               @foreach($outlet as $list)
+              <tr>
               @php
               $item = json_decode($list);
               @endphp
               <td>{{$item->id}}</td>
               <td>{{$item->name}}</td>
               <td>{{$item->key}}</td>
-              <td>@php echo $item->last_breath < (time()-5) ? '<span class="badge bg-label-danger">INACTIVE</span>' : '<span class="badge  bg-label-success">PAID</span>'@endphp</td>
+              <td>@php echo strtotime($item->last_breath) < (time()-5) ? '<span class="badge bg-label-danger">INACTIVE</span>' : '<span class="badge  bg-label-primary">ACTIVE</span>'@endphp</td>
               @endforeach
-              
+              </tr>
             <tfoot>
               <tr>
                 <th>#</th>

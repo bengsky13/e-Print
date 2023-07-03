@@ -16,7 +16,10 @@ class ApiKey
         if (!$outlet) {
             return response()->json(['success' => false], 401);
         }
-        $request->attributes->add(['outlet_id' => $outlet->id]);
+        $outlet->last_breath = date("Y-m-d H:i:s", time());
+        $outlet->touch();
+        $outlet->save();
+        $request->attributes->add(['outlet' => $outlet->id]);
         return $next($request);
     }
 }

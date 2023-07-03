@@ -12,5 +12,7 @@ class Transaction extends Model
         'session_id',
         'amount',
         'status',
+        'qr',
+        'trx_uuid',
     ];
 }
