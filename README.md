@@ -11,13 +11,6 @@ https://github.com/bengsky13/ePrint-Machine
 - **Payment Integration**: Integration with Midtrans payment gateway for secure online payments.
 - **Admin Panel**: Admin panel to manage users, printing orders, and system settings.
 
-## Installation
-
-### Midtrans Integration
-
-1. Sign up for a Midtrans account and obtain API credentials.
-2. Set your Midtrans API credentials in the `.env` file.
-
 ## Usage
 
 1. Register as a user and log in.
