@@ -34,11 +34,9 @@ class ApiController extends Controller
         $session = Session::where(["session" => $id, "outlet_id" => $outletId])->first();
         if ($session) {
             $data = ['success' => true, 'status' => $session->status];
-            if ($session->status == 3) {
-                $session->status = 4;
-                $session->touch();
-                $session->save();
-            }
+            $session->status = $request->status;
+            $session->touch();
+            $session->save();
             return response()->json($session, 200);
         }
         return response()->json(['success' => false, 'message' => "Not found"], 404);
