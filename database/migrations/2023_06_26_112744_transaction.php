@@ -12,10 +12,11 @@ return new class extends Migration {
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-            $table->integer('session_id');
+            $table->unsignedBigInteger('session_id');
             $table->integer('amount');
             $table->integer('status');
             $table->timestamps();
+            $table->foreign('session_id')->references('id')->on('sessions')->onDelete('cascade');
         });
     }
 

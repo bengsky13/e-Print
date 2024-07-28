@@ -11,11 +11,11 @@ return new class extends Migration {
     public function up(): void
     {
         //
-        Schema::table('transactions', function (Blueprint $table) {
+        // Schema::table('transactions', function (Blueprint $table) {
 
-            $table->unsignedBigInteger('session_id')->change();
-            $table->foreign('session_id')->references('id')->on('sessions')->onDelete('restrict')->onUpdate('restrict');
-        });
+        //     $table->unsignedBigInteger('session_id')->change();
+        //     $table->foreign('session_id')->references('id')->on('sessions')->onDelete('restrict')->onUpdate('restrict');
+        // });
     }
 
     /**

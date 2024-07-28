@@ -14,7 +14,7 @@ class ApiController extends Controller
     {
         $this->middleware("apikey");
     }
-    public function new(Request $request)
+    public function initialize(Request $request)
     {
         $check = true;
         while ($check) {
@@ -25,6 +25,22 @@ class ApiController extends Controller
                 return response()->json(['success' => true, 'uuid' => $uuid], 200);
             }
         }
+    }
+    public function updateStatus(Request $request)
+    {
+        $outletId = $request->attributes->get('outlet');
+
+        $session = Session::where(["session" => $id, "outlet_id" => $outletId])->first();
+        if ($session) {
+            $data = ['success' => true, 'status' => $session->status];
+            if ($session->status == 3) {
+                $session->status = 4;
+                $session->touch();
+                $session->save();
+            }
+            return response()->json($session, 200);
+        }
+        return response()->json(['success' => false, 'message' => "Not found"], 404);
     }
     public function status(Request $request, $id)
     {

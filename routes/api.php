@@ -15,5 +15,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/initialize', [ApiController::class, 'new']);
+Route::get('/initialize', [ApiController::class, 'initialize']);
 Route::get('/{id}/status', [ApiController::class, 'status']);
+Route::post('/{id}/update', [ApiController::class, 'updateStatus']);

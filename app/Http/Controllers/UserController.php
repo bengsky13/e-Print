@@ -123,8 +123,8 @@ class UserController extends Controller
         $session->status = 2;
         $session->touch();
         $session->save();
-        $pdfFilePath = $filePath . "/file.pdf"; // Replace with the path to your PDF file
-        $outputDirectory = '../public/uploads/' . $id . "/"; // Replace with the path to your desired output directory
+        $pdfFilePath = $filePath . "/file.pdf";
+        $outputDirectory = '../public/uploads/' . $id . "/";
 
         exec("gs -dNOPAUSE -sDEVICE=pngalpha -r300 -sOutputFile={$outputDirectory}%03d.png -dFirstPage=1 -dLastPage=9999 -dBATCH {$pdfFilePath}");
         return redirect("/print/$id");

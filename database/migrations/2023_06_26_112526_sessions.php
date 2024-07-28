@@ -1,5 +1,4 @@
 <?php
-
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -10,14 +9,16 @@ return new class extends Migration {
         Schema::create('sessions', function (Blueprint $table) {
             $table->id();
             $table->uuid('session')->unique();
-            $table->integer('outlet_id');
+            $table->unsignedBigInteger('outlet_id'); // Change to unsignedBigInteger
             $table->integer('status');
             $table->timestamps();
+
+            // Define the foreign key constraint
+            $table->foreign('outlet_id')->references('id')->on('outlets')->onDelete('cascade');
         });
     }
 
     public function down(): void
     {
-        //
     }
 };

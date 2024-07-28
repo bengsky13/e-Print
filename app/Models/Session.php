@@ -13,4 +13,7 @@ class Session extends Model
         'outlet_id',
         'status',
     ];
+    public function outlet(){
+        return $this->belongsTo(Outlet::class);
+    }
 }

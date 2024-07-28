@@ -15,4 +15,8 @@ class Transaction extends Model
         'qr',
         'trx_uuid',
     ];
+
+    public function session(){
+        return $this->belongsTo(Session::class);
+    }
 }
