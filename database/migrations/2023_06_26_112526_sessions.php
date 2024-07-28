@@ -11,6 +11,7 @@ return new class extends Migration {
             $table->uuid('session')->unique();
             $table->unsignedBigInteger('outlet_id'); // Change to unsignedBigInteger
             $table->integer('status');
+            $table->integer('color')->default(0);
             $table->timestamps();
 
             // Define the foreign key constraint

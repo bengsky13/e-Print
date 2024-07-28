@@ -102,6 +102,7 @@ class UserController extends Controller
         ]);
 
         $session->status = 3;
+        $session->color = $type;
         $session->touch();
         $session->save();
         return redirect("/print/$id");

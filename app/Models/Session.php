@@ -11,6 +11,7 @@ class Session extends Model
     protected $fillable = [
         'session',
         'outlet_id',
+        'color',
         'status',
     ];
     public function outlet(){
