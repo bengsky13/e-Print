@@ -97,6 +97,7 @@ class UserController extends Controller
             "session_id" => $session->id,
             "amount" => $price,
             "status" => 404,
+            "qr" => $qr,
             "trx_uuid" => $transaction_id
         ]);
 
