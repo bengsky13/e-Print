@@ -6,6 +6,7 @@ use App\Models\Outlet;
 use Illuminate\Http\Request;
 use App\Models\Session;
 use App\Models\Transaction;
+use App\Http\Controllers\Midtrans;
 use Illuminate\Support\Str;
 
 class ApiController extends Controller
