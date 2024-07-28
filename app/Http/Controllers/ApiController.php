@@ -52,8 +52,9 @@ class ApiController extends Controller
             $data = ['success' => true, 'status' => $session->status];
             if ($session->status == 3) {
                 $trx = Transaction::where(["session_id" => $session->id])->first();
-                $paymentStatus = Midtrans::checkTransaction($trx->trx_uuid);
-                if($paymentStatus->transaction_status == "settlement"){
+                $paymentStatus = new Midtrans;
+                $check = $paymentStatus->checkTransaction($trx->trx_uuid);
+                if($check->transaction_status == "settlement"){
                     $trx->status = 200;
                     $session->status = 4;
                     $trx->touch();
