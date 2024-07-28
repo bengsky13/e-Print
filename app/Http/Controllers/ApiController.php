@@ -47,7 +47,7 @@ class ApiController extends Controller
 
         $session = Session::where(["session" => $id, "outlet_id" => $outletId])->first();
         if ($session) {
-            $data = ['success' => true, 'status' => $session->status];
+            $data = ['success' => true, 'status' => $session->status, 'color' => $session->color];
             if ($session->status == 3) {
                 $trx = Transaction::where(["session_id" => $session->id])->first();
                 $paymentStatus = new Midtrans;
