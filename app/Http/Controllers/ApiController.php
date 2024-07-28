@@ -27,7 +27,7 @@ class ApiController extends Controller
             }
         }
     }
-    public function updateStatus(Request $request)
+    public function updateStatus($id, Request $request)
     {
         $outletId = $request->attributes->get('outlet');
 
