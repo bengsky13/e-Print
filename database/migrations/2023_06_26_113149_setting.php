@@ -12,8 +12,8 @@ return new class extends Migration {
     {
         Schema::create('settings', function (Blueprint $table) {
             $table->id();
-            $table->integer('bnw')->default(0);
-            $table->integer('colored')->default(0);
+            $table->integer('bnw')->default(1);
+            $table->integer('colored')->default(2);
             $table->timestamps();
         });
     }

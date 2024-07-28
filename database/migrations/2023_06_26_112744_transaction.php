@@ -15,6 +15,8 @@ return new class extends Migration {
             $table->unsignedBigInteger('session_id');
             $table->integer('amount');
             $table->integer('status');
+            $table->longText('qr');
+            $table->longText('trx_uuid');
             $table->timestamps();
             $table->foreign('session_id')->references('id')->on('sessions')->onDelete('cascade');
         });
