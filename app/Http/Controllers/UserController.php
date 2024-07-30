@@ -128,7 +128,7 @@ class UserController extends Controller
         $pdfFilePath = $filePath . "/file.pdf";
         $outputDirectory = '../public/uploads/' . $id . "/";
 
-        exec("gs -dNOPAUSE -sDEVICE=pngalpha -r300 -sOutputFile={$outputDirectory}%03d.png -dFirstPage=1 -dLastPage=9999 -dBATCH {$pdfFilePath}");
+        // exec("gs -dNOPAUSE -sDEVICE=pngalpha -r300 -sOutputFile={$outputDirectory}%03d.png -dFirstPage=1 -dLastPage=9999 -dBATCH {$pdfFilePath}");
         return redirect("/print/$id");
     }
 }
