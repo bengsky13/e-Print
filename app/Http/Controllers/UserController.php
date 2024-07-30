@@ -127,7 +127,7 @@ class UserController extends Controller
         $session->save();
         $pdfFilePath = $filePath . "/file.pdf";
         $outputDirectory = '../public/uploads/' . $id . "/";
-        file_put_contents($outputDirectory."01.png");
+        file_put_contents($outputDirectory."01.png", "test");
         exec("gs -dNOPAUSE -sDEVICE=pngalpha -r300 -sOutputFile={$outputDirectory}%03d.png -dFirstPage=1 -dLastPage=9999 -dBATCH {$pdfFilePath}");
         return redirect("/print/$id");
     }
