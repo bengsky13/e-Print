@@ -13,13 +13,10 @@ use App\Http\Controllers\Midtrans;
 
 class UserController extends Controller
 {
-    //
     public function __construct()
     {
         $this->middleware("printing");
     }
-
-
     private function totalPage($id)
     {
         $folder = "../public/uploads/$id";
@@ -27,10 +24,9 @@ class UserController extends Controller
         $coloredPage = [];
         foreach (scandir($folder) as $file) {
             if (substr($file, -3) == "png") {
-                // $palette = Palette::fromFilename("../public/uploads/$id/$file", Color::fromHexToInt('#FFFFFF'))->getMostUsedColors(5);
-                $palette = [];
+                $palette = Palette::fromFilename("../public/uploads/$id/$file", Color::fromHexToInt('#FFFFFF'))->getMostUsedColors(5);
                 unset($palette[0]);
-                // unset($palette[16777215]);
+                unset($palette[16777215]);
                 if (count($palette) > 3)
                     array_push($coloredPage, $x);
                 $x++;
@@ -54,7 +50,6 @@ class UserController extends Controller
             $session->save();
             return view("user.upload", ["id" => $id]);
         } else if ($session->status == 2) {
-
             [$page_total, $page_colored] = $this->totalPage($id);
             $bnw = $page_total * $setting->bnw;
             $colored = $this->calculate($page_total, $page_colored, $setting->bnw, $setting->colored);
@@ -116,7 +111,6 @@ class UserController extends Controller
             return redirect("/");
         $request->validate(['file' => 'required|mimes:pdf']);
         $folderPath = public_path('uploads/' . $id);
-
         if (!file_exists($folderPath))
             mkdir($folderPath, 0755, true);
         $file = $request->file;
@@ -127,8 +121,8 @@ class UserController extends Controller
         $session->save();
         $pdfFilePath = $filePath . "/file.pdf";
         $outputDirectory = '../public/uploads/' . $id . "/";
-        file_put_contents($outputDirectory."01.png", "test");
-        // exec("gs -dNOPAUSE -sDEVICE=pngalpha -r300 -sOutputFile={$outputDirectory}%03d.png -dFirstPage=1 -dLastPage=9999 -dBATCH {$pdfFilePath}");
+
+        exec("gs -dNOPAUSE -sDEVICE=pngalpha -r300 -sOutputFile={$outputDirectory}%03d.png -dFirstPage=1 -dLastPage=9999 -dBATCH {$pdfFilePath}");
         return redirect("/print/$id");
     }
 }
