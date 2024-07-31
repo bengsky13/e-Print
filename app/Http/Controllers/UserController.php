@@ -10,6 +10,10 @@ use League\ColorExtractor\Color;
 use League\ColorExtractor\Palette;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Midtrans;
+use setasign\Fpdi\Fpdi;
+use App\Jobs\ColorDetect;
+use Illuminate\Support\Facades\Redis;
+
 
 class UserController extends Controller
 {
@@ -17,22 +21,31 @@ class UserController extends Controller
     {
         $this->middleware("printing");
     }
+    public function dispatchChecker($id){
+        ColorDetect::dispatch($id);
+    }
+    
+    public function colorStatus($id){
+        $session = Session::where(["session" => $id])->first();
+        sleep(1);
+        if (!$session)
+            return response()->json(["sucess" => false]);
+        $folder = "../public/uploads/$id/";
+        $pdf = new Fpdi();
+        $pageCount = $pdf->setSourceFile($folder."file.pdf");
+        $coloredPage = [];
+        $progress = @file_get_contents($folder."tmp.txt")+1;
+        $status = (bool)@file_get_contents($folder."finish.txt");
+        return response()->json(["sucess" => true, "done" => $status, "progress" => floor($progress/$pageCount*100)]);
+    }
+    
     private function totalPage($id)
     {
         $folder = "../public/uploads/$id";
-        $x = 0;
-        $coloredPage = [];
-        foreach (scandir($folder) as $file) {
-            if (substr($file, -3) == "png") {
-                $palette = Palette::fromFilename("../public/uploads/$id/$file", Color::fromHexToInt('#FFFFFF'))->getMostUsedColors(5);
-                unset($palette[0]);
-                unset($palette[16777215]);
-                if (count($palette) > 3)
-                    array_push($coloredPage, $x);
-                $x++;
-            }
-        }
-        return [$x, count($coloredPage)];
+        $pageCount = file_get_contents($folder."/tmp.txt")+1;
+        $coloredPage = json_decode(file_get_contents($folder."/data.json"));
+        return [$pageCount, count(array_unique($coloredPage))];
+
     }
     private function calculate($page_total, $page_colored, $bnw, $color)
     {
@@ -50,6 +63,17 @@ class UserController extends Controller
             $session->save();
             return view("user.upload", ["id" => $id]);
         } else if ($session->status == 2) {
+            $file = "../public/uploads/$id/finish.txt";
+            if(file_exists($file)){
+                $isFinish = file_get_contents($file);
+                if($isFinish !== "1"){
+                    sleep(1);
+                    return view("user.wait");
+                }
+            }
+            else{
+                return view("user.wait");
+            }
             [$page_total, $page_colored] = $this->totalPage($id);
             $bnw = $page_total * $setting->bnw;
             $colored = $this->calculate($page_total, $page_colored, $setting->bnw, $setting->colored);
@@ -122,7 +146,6 @@ class UserController extends Controller
         $pdfFilePath = $filePath . "/file.pdf";
         $outputDirectory = '../public/uploads/' . $id . "/";
 
-        exec("gs -dNOPAUSE -sDEVICE=pngalpha -r300 -sOutputFile={$outputDirectory}%03d.png -dFirstPage=1 -dLastPage=9999 -dBATCH {$pdfFilePath}");
         return redirect("/print/$id");
     }
 }

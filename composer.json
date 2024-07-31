@@ -11,7 +11,10 @@
         "laravel/sanctum": "^3.2",
         "laravel/tinker": "^2.8",
         "league/color-extractor": "^0.4.0",
-        "org_heigl/ghostscript": "^2.3"
+        "org_heigl/ghostscript": "^2.3",
+        "predis/predis": "^2.2",
+        "setasign/fpdf": "^1.8",
+        "setasign/fpdi": "^2.6"
     },
     "require-dev": {
         "beyondcode/laravel-er-diagram-generator": "^3.0",

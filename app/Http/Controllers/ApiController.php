@@ -11,6 +11,23 @@ use Illuminate\Support\Str;
 
 class ApiController extends Controller
 {
+    public function deleteDirectory($dirPath) {
+        if (!is_dir($dirPath)) {
+            return false;
+        }
+    
+        $files = new RecursiveIteratorIterator(
+            new RecursiveDirectoryIterator($dirPath, RecursiveDirectoryIterator::SKIP_DOTS),
+            RecursiveIteratorIterator::CHILD_FIRST
+        );
+    
+        foreach ($files as $fileinfo) {
+            $todo = ($fileinfo->isDir() ? 'rmdir' : 'unlink');
+            $todo($fileinfo->getRealPath());
+        }
+    
+        return rmdir($dirPath);
+    }
     public function __construct()
     {
         $this->middleware("apikey");
@@ -23,6 +40,10 @@ class ApiController extends Controller
             $outletId = $request->attributes->get('outlet');
             if (Session::create(["session" => $uuid, "outlet_id" => $outletId, "status" => 0])) {
                 $check = false;
+                $sessions = Session::where('session', '!=', $uuid)->where('outlet_id', '=', $outletId)->get();
+                foreach($sessions as $session){
+                    shell_exec("rm -rf uploads/".$session['session']);
+                }
                 return response()->json(['success' => true, 'uuid' => $uuid], 200);
             }
         }
