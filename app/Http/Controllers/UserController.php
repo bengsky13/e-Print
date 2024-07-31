@@ -24,11 +24,11 @@ class UserController extends Controller
         $coloredPage = [];
         foreach (scandir($folder) as $file) {
             if (substr($file, -3) == "png") {
-                // $palette = Palette::fromFilename("../public/uploads/$id/$file", Color::fromHexToInt('#FFFFFF'))->getMostUsedColors(5);
-                // unset($palette[0]);
-                // unset($palette[16777215]);
-                // if (count($palette) > 3)
-                    // array_push($coloredPage, $x);
+                $palette = Palette::fromFilename("../public/uploads/$id/$file", Color::fromHexToInt('#FFFFFF'))->getMostUsedColors(5);
+                unset($palette[0]);
+                unset($palette[16777215]);
+                if (count($palette) > 3)
+                    array_push($coloredPage, $x);
                 $x++;
             }
         }
