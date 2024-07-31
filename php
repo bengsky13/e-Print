@@ -1,0 +1,1 @@
+yes artisan migrate
