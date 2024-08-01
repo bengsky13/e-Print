@@ -17,6 +17,7 @@
         "setasign/fpdi": "^2.6"
     },
     "require-dev": {
+        "andyabih/laravel-to-uml": "^1.0",
         "beyondcode/laravel-er-diagram-generator": "^3.0",
         "fakerphp/faker": "^1.9.1",
         "laravel/pint": "^1.0",

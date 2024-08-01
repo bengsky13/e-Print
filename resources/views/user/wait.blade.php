@@ -58,16 +58,7 @@
             progressBarInner.style.width = value + '%';
             progressBarInner.textContent = value + '%';
         }
-        function colorStatus(){
-            try{
-            fetch(window.location.href+"/color").then((result) => result.json())
-            }
-            catch(err){
-                colorStatus()
-            }
-        }
         (async() => {
-        colorStatus()
         // 
         while(true){
             try{

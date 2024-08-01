@@ -21,9 +21,6 @@ class UserController extends Controller
     {
         $this->middleware("printing");
     }
-    public function dispatchChecker($id){
-        ColorDetect::dispatch($id);
-    }
     
     public function colorStatus($id){
         $session = Session::where(["session" => $id])->first();
@@ -145,7 +142,7 @@ class UserController extends Controller
         $session->save();
         $pdfFilePath = $filePath . "/file.pdf";
         $outputDirectory = '../public/uploads/' . $id . "/";
-
+        ColorDetect::dispatch($id);
         return redirect("/print/$id");
     }
 }
