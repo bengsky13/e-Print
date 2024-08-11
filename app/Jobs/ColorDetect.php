@@ -7,6 +7,7 @@ use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Support\Facades\Log;
 use setasign\Fpdi\Fpdi;
 use League\ColorExtractor\Palette;
 use League\ColorExtractor\Color;
@@ -23,6 +24,7 @@ class ColorDetect implements ShouldQueue
     public function handle(): void
     {
         $id = $this->id;
+        // Log::info("ColorDetect job dispatched with ID: $id Started");
         $folder = "public/uploads/$id/";
         $pdf = new Fpdi();
         $pageCount = $pdf->setSourceFile($folder."file.pdf");
@@ -33,9 +35,10 @@ class ColorDetect implements ShouldQueue
             file_put_contents($folder."data.json", "[]");
             file_put_contents($folder."finish.txt", "0");
         }
+        $finish = file_get_contents($folder."finish.txt");
+        if($finish) return;
         $start = file_get_contents($folder."tmp.txt");
         $coloredPage = json_decode(file_get_contents($folder."data.json"));
-        if($start+1 !== $pageCount){
             for($x = $start; $x<$pageCount; $x++){
                 $imagick->readImage($folder."/file.pdf" . '['.$x.']');
                 $imagick->setImageFormat('jpeg');
@@ -50,7 +53,6 @@ class ColorDetect implements ShouldQueue
                 $imagick->clear();
                 $imagick->destroy();
         }
-    }
     file_put_contents($folder."finish.txt", "1");
     }
 }

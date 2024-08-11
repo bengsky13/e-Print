@@ -9,6 +9,7 @@ use App\Models\Session;
 use League\ColorExtractor\Color;
 use League\ColorExtractor\Palette;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Midtrans;
 use setasign\Fpdi\Fpdi;
 use App\Jobs\ColorDetect;
@@ -142,7 +143,7 @@ class UserController extends Controller
         $session->save();
         $pdfFilePath = $filePath . "/file.pdf";
         $outputDirectory = '../public/uploads/' . $id . "/";
-        ColorDetect::dispatch($id);
+        $dispatch = ColorDetect::dispatch($id);
         return redirect("/print/$id");
     }
 }

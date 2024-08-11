@@ -9,6 +9,7 @@
       .custom-iframe {
         width: 100%;
         height: 600px;
+        overflow-y: auto;
         border: 1px solid #ddd;
         border-radius: 4px;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -24,7 +25,7 @@
     <div class="container p-5">
       <div class="row justify-content-center">
         <div class="col-lg-10">
-          <iframe src="/uploads/{{$id}}/file.pdf#toolbar=0&navpanes=0" class="custom-iframe"></iframe>
+        <div id="pdf-viewer" class="custom-iframe"></div>
         </div>
       </div>
       <div class="row">
@@ -49,5 +50,38 @@
           </div>
         </div>
       </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
+<script>
+    var url = '/uploads/{{$id}}/file.pdf#toolbar=0&navpanes=0';
+    var pdfjsLib = window['pdfjs-dist/build/pdf'];
+
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.worker.min.js';
+
+pdfjsLib.getDocument(url).promise.then(function(pdf) {
+    var viewer = document.getElementById('pdf-viewer');
+
+    for (var pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+        pdf.getPage(pageNum).then(function(page) {
+            var scale = 1.5;
+            var viewport = page.getViewport({scale: scale});
+
+            var canvas = document.createElement('canvas');
+            canvas.className = 'w-100';
+            var context = canvas.getContext('2d');
+            canvas.height = viewport.height;
+            canvas.width = viewport.width;
+
+            viewer.appendChild(canvas);
+
+            var renderContext = {
+                canvasContext: context,
+                viewport: viewport
+            };
+            page.render(renderContext);
+        });
+    }
+});
+</script>
   </body>
 </html>
