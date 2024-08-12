@@ -8,6 +8,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Log;
+use Smalot\PdfParser\Parser;
 use Illuminate\Queue\SerializesModels;
 
 class ColorDetect implements ShouldQueue
