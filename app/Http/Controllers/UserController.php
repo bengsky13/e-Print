@@ -26,6 +26,7 @@ class UserController extends Controller
         sleep(1);
         if (!$session)
             return response()->json(["sucess" => false]);
+        $dispatch = ColorDetect::dispatch($id);
         $folder = "../public/uploads/$id/";
         $parser = new Parser();
         $pdf = $parser->parseFile($folder."file.pdf");
