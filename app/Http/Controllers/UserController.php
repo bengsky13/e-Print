@@ -6,12 +6,10 @@ use App\Models\Setting;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use App\Models\Session;
-use League\ColorExtractor\Color;
-use League\ColorExtractor\Palette;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Midtrans;
-use setasign\Fpdi\Fpdi;
+use Smalot\PdfParser\Parser;
 use App\Jobs\ColorDetect;
 use Illuminate\Support\Facades\Redis;
 
@@ -29,8 +27,9 @@ class UserController extends Controller
         if (!$session)
             return response()->json(["sucess" => false]);
         $folder = "../public/uploads/$id/";
-        $pdf = new Fpdi();
-        $pageCount = $pdf->setSourceFile($folder."file.pdf");
+        $parser = new Parser();
+        $pdf = $parser->parseFile($folder."file.pdf");
+        $pageCount = $pdf->getDetails()['Pages'];
         $coloredPage = [];
         $progress = @file_get_contents($folder."tmp.txt")+1;
         $status = (bool)@file_get_contents($folder."finish.txt");

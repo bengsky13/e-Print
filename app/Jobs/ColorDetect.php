@@ -8,7 +8,6 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Log;
-use setasign\Fpdi\Fpdi;
 use Illuminate\Queue\SerializesModels;
 
 class ColorDetect implements ShouldQueue
@@ -90,8 +89,9 @@ class ColorDetect implements ShouldQueue
         $id = $this->id;
         // Log::info("ColorDetect job dispatched with ID: $id Started");
         $folder = "public/uploads/$id/";
-        $pdf = new Fpdi();
-        $pageCount = $pdf->setSourceFile($folder."file.pdf");
+        $parser = new Parser();
+        $pdf = $parser->parseFile($folder."file.pdf");
+        $pageCount = $pdf->getDetails()['Pages'];
         $coloredPage = [];
         $imagick = new \Imagick();
         if(!file_exists($folder."tmp.txt")){
